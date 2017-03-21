@@ -359,7 +359,7 @@ function dind::run {
   fi
 
   if [[ "${container_name}" == "kube-node-1" ]]; then
-    opts+=(-p "8888:80") 
+    opts+=(-p "8888:8888") 
   fi
 
 
@@ -578,7 +578,9 @@ function dind::wait-for-ready {
   kubectl --namespace kube-system rollout status deployment/monitoring-grafana
   kubectl --namespace kube-system rollout status deployment/monitoring-influxdb
   kubectl --namespace kube-system rollout status deployment/heapster
-  kubectl apply -f ingress.yml
+  kubectl apply -f deployment.yml
+  kubectl rollout status deployment/nginx
+  kubectl get ing
   open "http://localhost:${APISERVER_PORT}/ui"
 }
 
