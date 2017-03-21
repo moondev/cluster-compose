@@ -576,6 +576,7 @@ function dind::wait-for-ready {
 
   "${kubectl}" get nodes >&2
   dind::step "Access dashboard at:" "http://localhost:${APISERVER_PORT}/ui"
+  open "http://localhost:${APISERVER_PORT}/ui"
 }
 
 function dind::up {
