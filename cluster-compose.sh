@@ -585,7 +585,7 @@ function dind::wait-for-ready {
   kubectl apply -f manifests/traefik.yml
   kubectl --namespace kube-system rollout status deployment/traefik-ingress-controller
   kubectl apply -f manifests/dashboard-ingress.yml
-  kubectl get ing
+  kubectl --namespace get ing
   sleep 5
   open "http://dashboard.127.0.0.1.xip.io"
 }
