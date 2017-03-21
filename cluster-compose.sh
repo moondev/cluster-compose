@@ -53,7 +53,7 @@ BUILD_KUBEADM="${BUILD_KUBEADM:-}"
 BUILD_HYPERKUBE="${BUILD_HYPERKUBE:-}"
 APISERVER_PORT=${APISERVER_PORT:-8080}
 #NUM_NODES=${NUM_NODES:-2}
-NUM_NODES=${NUM_NODES:-1}
+NUM_NODES=2
 LOCAL_KUBECTL_VERSION=${LOCAL_KUBECTL_VERSION:-}
 KUBECTL_DIR="${KUBECTL_DIR:-${HOME}/.kubeadm-dind-cluster}"
 DASHBOARD_URL="${DASHBOARD_URL:-https://rawgit.com/kubernetes/dashboard/bfab10151f012d1acc5dfb1979f3172e2400aa3c/src/deploy/kubernetes-dashboard.yaml}"
@@ -363,7 +363,7 @@ function dind::run {
 
   if [[ "${container_name}" == "kube-node-1" ]]; then
     opts+=(-p "80:80")
-    opts+=(-p "5000:30912")
+    opts+=(-p "30912:30912")
   fi
 
 
