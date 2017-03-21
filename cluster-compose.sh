@@ -578,13 +578,13 @@ function dind::wait-for-ready {
 
   "${kubectl}" get nodes >&2
   dind::step "Access dashboard at:" "http://localhost:${APISERVER_PORT}/ui"
-  kubectl apply -f heapster
+  kubectl apply -f manifests/heapster
   kubectl --namespace kube-system rollout status deployment/monitoring-grafana
   kubectl --namespace kube-system rollout status deployment/monitoring-influxdb
   kubectl --namespace kube-system rollout status deployment/heapster
-  kubectl apply -f traefik.yml
+  kubectl apply -f manifests/traefik.yml
   kubectl --namespace kube-system rollout status deployment/traefik-ingress-controller
-  kubectl apply -f dashboard-ingress.yml
+  kubectl apply -f manifests/dashboard-ingress.yml
   kubectl get ing
   sleep 5
   open "http://dashboard.127.0.0.1.xip.io"
