@@ -353,17 +353,15 @@ function dind::run {
 
   # remove any previously created containers with the same name
   docker rm -vf "${container_name}" >&/dev/null || true
-  echo "$container_name" >> continers.txt
-  echo "$portforward" >> ports.txt
   if [[ "$portforward" ]]; then
-    if [[ "$container_name" == "kube-node-1" ]]; then
-      opts+=(-p "8888:80") 
-    else
-      opts+=(-p "$portforward")
-    fi
-
-
+    opts+=(-p "$portforward")
+    opts+=(-p "80:80")
   fi
+
+  if [[ "${container_name}" == "kube-node-1" ]]; then
+    opts+=(-p "8888:80") 
+  fi
+
 
   if [[ "$netshift" ]]; then
     args+=("systemd.setenv=DOCKER_NETWORK_OFFSET=0.0.${netshift}.0")
@@ -576,6 +574,11 @@ function dind::wait-for-ready {
 
   "${kubectl}" get nodes >&2
   dind::step "Access dashboard at:" "http://localhost:${APISERVER_PORT}/ui"
+  kubectl apply -f heapster
+  kubectl --namespace kube-system rollout status deployment/monitoring-grafana
+  kubectl --namespace kube-system rollout status deployment/monitoring-influxdb
+  kubectl --namespace kube-system rollout status deployment/heapster
+  kubectl apply -f ingress.yml
   open "http://localhost:${APISERVER_PORT}/ui"
 }
 
