@@ -8,6 +8,7 @@ spec:
   ports:
     - port: 80
       targetPort: 80
+      nodePort: 30902
   selector:
     app: nginx
     tier: nginx
@@ -35,13 +36,23 @@ spec:
         ports:
         - containerPort: 80
           name: nginx
-          
+
 ---          
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: test-ingress
+  name: ingress-services
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   backend:
-    serviceName: nginx
+    serviceName: default-http-backend
     servicePort: 80
+  rules:
+  - host: 127.0.0.1.xip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx
+          servicePort: 80

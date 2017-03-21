@@ -354,12 +354,13 @@ function dind::run {
   # remove any previously created containers with the same name
   docker rm -vf "${container_name}" >&/dev/null || true
   if [[ "$portforward" ]]; then
-    opts+=(-p "$portforward")
-    opts+=(-p "80:80")
+    #opts+=(-p "$portforward")
+    opts+=(-p "127.0.0.1:80:80")
+    opts+=(-p "127.0.0.1:8080:8080")
   fi
 
   if [[ "${container_name}" == "kube-node-1" ]]; then
-    opts+=(-p "8888:8888") 
+    opts+=(-p "3092:3092") 
   fi
 
 
