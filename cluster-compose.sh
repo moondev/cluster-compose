@@ -586,6 +586,8 @@ function dind::wait-for-ready {
   kubectl apply -f ing.yml
   kubectl get ing
   sleep 5
+  helm init
+  helm install --namespace spinnaker --name spinnaker spinnaker-helm/spinnaker-chart
   open "http://dashboard.127.0.0.1.xip.io"
 }
 
