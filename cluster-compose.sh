@@ -585,7 +585,8 @@ function dind::wait-for-ready {
   kubectl apply -f traefik.yml
   kubectl apply -f ing.yml
   kubectl get ing
-  open "http://localhost:${APISERVER_PORT}/ui"
+  sleep 5
+  open "http://dashboard.127.0.0.1.xip.io"
 }
 
 function dind::up {

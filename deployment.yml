@@ -36,23 +36,3 @@ spec:
         ports:
         - containerPort: 80
           name: nginx
-
----          
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: ingress-services
-  annotations:
-    ingress.kubernetes.io/rewrite-target: /
-spec:
-  backend:
-    serviceName: default-http-backend
-    servicePort: 80
-  rules:
-  - host: 127.0.0.1.xip.io
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: nginx
-          servicePort: 80
