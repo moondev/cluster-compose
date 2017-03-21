@@ -583,7 +583,8 @@ function dind::wait-for-ready {
   kubectl --namespace kube-system rollout status deployment/monitoring-influxdb
   kubectl --namespace kube-system rollout status deployment/heapster
   kubectl apply -f traefik.yml
-  kubectl apply -f ing.yml
+  kubectl --namespace kube-system rollout status deployment/traefik-ingress-controller
+  kubectl apply -f dashboard-ingress.yml
   kubectl get ing
   sleep 5
   open "http://dashboard.127.0.0.1.xip.io"
