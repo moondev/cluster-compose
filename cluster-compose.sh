@@ -582,14 +582,10 @@ function dind::wait-for-ready {
   kubectl --namespace kube-system rollout status deployment/monitoring-grafana
   kubectl --namespace kube-system rollout status deployment/monitoring-influxdb
   kubectl --namespace kube-system rollout status deployment/heapster
-  # kubectl apply -f deployment.yml
-  # kubectl rollout status deployment/nginx
   kubectl apply -f traefik.yml
   kubectl apply -f ing.yml
   kubectl get ing
   sleep 5
-  # helm init
-  # helm install --namespace spinnaker --name spinnaker spinnaker-helm/spinnaker-chart
   open "http://dashboard.127.0.0.1.xip.io"
 }
 
