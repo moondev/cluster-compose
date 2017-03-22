@@ -389,7 +389,7 @@ function dind::run {
   echo "start" >> start.txt
 
   if [[ "${container_name}" == "kube-node-1" ]]; then
-    opts+=(-v "$PWD/nodetest:/hostvolume")
+    opts+=(-v "$PWD/apps:/apps")
   fi
 
   # Start the new container.

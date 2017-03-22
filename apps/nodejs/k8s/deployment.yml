@@ -30,7 +30,7 @@ spec:
         tier: nodejs
     spec:
       containers:
-      - image: nodejs:6
+      - image: node:6
         name: nodejs
         command: ["/app/start.sh"]
         ports:
@@ -38,11 +38,11 @@ spec:
           name: nodejs
         volumeMounts:
         - name: app
-          mountPath: /app
+          mountPath: /apps
       volumes:
       - name: app
         hostPath:
-          path: /hostvolume
+          path: /apps/nodejs
 
 ---
 apiVersion: extensions/v1beta1
