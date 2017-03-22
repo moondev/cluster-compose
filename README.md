@@ -6,7 +6,7 @@ Wildcard dns support via traefik ingress controller and xip.io
 
 
 
-#### Ensure kubectl in installed and on path. Port 80 must also be open
+#### Ensure kubectl is installed and on path. Port 80 must also be open
 
 `sudo ./cluster-compose.sh up`
 
