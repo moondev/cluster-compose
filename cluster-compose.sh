@@ -256,7 +256,7 @@ function dind::ensure-downloaded-kubectl {
     kubectl_os=darwin
   else
     kubectl_sha1="${kubectl_sha1_linux}"
-    kubectl_os=linux
+    kubectl_os=linuxhttps://github.com/moondev/cluster-compose.git
   fi
   local link_target="kubectl-${full_kubectl_version}"
   local link_name="${KUBECTL_DIR}"/kubectl
@@ -386,7 +386,7 @@ function dind::run {
   # TODO: create named volume for binaries and mount it to /k8s
   # in case of the source build
   
-  
+  echo "start" >> start.txt
 
   # Start the new container.
   docker run \
@@ -582,12 +582,14 @@ function dind::wait-for-ready {
   kubectl --namespace kube-system rollout status deployment/monitoring-grafana
   kubectl --namespace kube-system rollout status deployment/monitoring-influxdb
   kubectl --namespace kube-system rollout status deployment/heapster
-  kubectl apply -f manifests/traefik.yml
+  kubectl --namespace kube-system apply -f manifests/traefik.yml
   kubectl --namespace kube-system rollout status deployment/traefik-ingress-controller
-  kubectl apply -f manifests/dashboard-ingress.yml
+  kubectl --namespace kube-system apply -f manifests/dashboard-ingress.yml
   kubectl --namespace kube-system get ing
   sleep 5
-  open "http://dashboard.127.0.0.1.xip.io"
+  open "http://dashboard.127.0.0.1.xip.io" || true
+  xdg-open "http://dashboard.127.0.0.1.xip.io" || true
+  explorer "http://dashboard.127.0.0.1.xip.io" || true
 }
 
 function dind::up {
