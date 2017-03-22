@@ -38,7 +38,7 @@ spec:
           name: nodejs
         volumeMounts:
         - name: app
-          mountPath: /apps
+          mountPath: /app
       volumes:
       - name: app
         hostPath:
