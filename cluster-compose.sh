@@ -53,7 +53,7 @@ BUILD_KUBEADM="${BUILD_KUBEADM:-}"
 BUILD_HYPERKUBE="${BUILD_HYPERKUBE:-}"
 APISERVER_PORT=${APISERVER_PORT:-8080}
 #NUM_NODES=${NUM_NODES:-2}
-NUM_NODES=2
+NUM_NODES=1
 LOCAL_KUBECTL_VERSION=${LOCAL_KUBECTL_VERSION:-}
 KUBECTL_DIR="${KUBECTL_DIR:-${HOME}/.kubeadm-dind-cluster}"
 DASHBOARD_URL="${DASHBOARD_URL:-https://rawgit.com/kubernetes/dashboard/bfab10151f012d1acc5dfb1979f3172e2400aa3c/src/deploy/kubernetes-dashboard.yaml}"
@@ -387,6 +387,10 @@ function dind::run {
   # in case of the source build
   
   echo "start" >> start.txt
+
+  if [[ "${container_name}" == "kube-node-1" ]]; then
+    opts+=(-v "/home/chad/cluster-compose/hostvolume:/hostvolume")
+  fi
 
   # Start the new container.
   docker run \
