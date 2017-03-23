@@ -1,9 +1,11 @@
 # ClusterCompose
 
-Launch a local k8s cluster with only docker. No virtualbox or minikube needed.
+Launch and develop inside a local k8s cluster with only docker. No virtualbox or minikube needed.
 
-Wildcard dns support via traefik ingress controller and xip.io
-
+If on macOS ensure md5sha1sum is installed
+```
+brew install md5sha1sum
+```
 
 
 #### Ensure kubectl is installed and on path. Port 80 must also be open
