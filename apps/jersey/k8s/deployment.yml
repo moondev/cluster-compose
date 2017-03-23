@@ -1,0 +1,76 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jersey
+  labels:
+    app: jersey
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: jersey
+    tier: jersey
+  type: NodePort
+  
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jersey
+  labels:
+    app: jersey
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: jersey
+        tier: jersey
+    spec:
+      containers:
+
+##### main
+
+      - image: tomcat:7-jre8
+        name: tomcat
+        ports:
+        - containerPort: 8080
+          name: tomcat
+        volumeMounts:
+        - name: pod-vol
+          mountPath: /pod-vol
+          
+#### sidecar
+
+      - image: java:8
+        name: jersey
+        command: ["/app/start.sh"]
+        volumeMounts:
+        - name: app
+          mountPath: /app
+        - name: pod-vol
+          mountPath: /pod-vol
+      volumes:
+      - name: pod-vol
+        emptyDir: {}
+      - name: app
+        hostPath:
+          path: /apps/jersey
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+ name: jersey-ingress
+spec:
+ rules:
+   - host: jersey.127.0.0.1.xip.io
+     http:
+       paths:
+         - path: /
+           backend:
+             serviceName: jersey
+             servicePort: 8080

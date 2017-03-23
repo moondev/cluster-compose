@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomcat
+  labels:
+    app: tomcat
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: tomcat
+    tier: tomcat
+  type: NodePort
+  
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tomcat
+  labels:
+    app: tomcat
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: tomcat
+        tier: tomcat
+    spec:
+      containers:
+      - image: tomcat:7-jre8
+        name: tomcat
+        command: ["/app/start.sh"]
+        ports:
+        - containerPort: 8080
+          name: tomcat
+        volumeMounts:
+        - name: app
+          mountPath: /app
+      volumes:
+      - name: app
+        hostPath:
+          path: /apps/tomcat
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+ name: tomcat-ingress
+spec:
+ rules:
+   - host: tomcat.127.0.0.1.xip.io
+     http:
+       paths:
+         - path: /
+           backend:
+             serviceName: tomcat
+             servicePort: 8080

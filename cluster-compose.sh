@@ -386,7 +386,6 @@ function dind::run {
   # TODO: create named volume for binaries and mount it to /k8s
   # in case of the source build
   
-  echo "start" >> start.txt
 
   if [[ "${container_name}" == "kube-node-1" ]]; then
     opts+=(-v "$PWD/apps:/apps")
