@@ -1,3 +1,3 @@
 #!/bin/bash
-
-cd /app; npm install; node server.js
+npm install -g nodemon
+cd /app; npm install; nodemon server.js
