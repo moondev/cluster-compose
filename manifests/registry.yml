@@ -56,7 +56,6 @@ spec:
   ports:
   - name: registry
     port: 5000
-    nodePort: 6000
     protocol: TCP
 ---
 apiVersion: v1

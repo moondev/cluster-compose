@@ -388,7 +388,7 @@ function dind::run {
   
 
   if [[ "${container_name}" == "kube-node-1" ]]; then
-    opts+=(-v "$PWD/apps:/apps")
+    opts+=(-v "$PWD:/workdir")
   fi
 
   # Start the new container.
@@ -581,20 +581,33 @@ function dind::wait-for-ready {
 
   "${kubectl}" get nodes >&2
   dind::step "Access dashboard at:" "http://localhost:${APISERVER_PORT}/ui"
-  kubectl apply -f manifests/heapster
+  #  kubectl apply -f https://raw.githubusercontent.com/moondev/cluster-compose/master/manifests/heapster/grafana-deployment.yaml
+
+
+  kubectl apply -f secret.yml
+
+  kubectl create -f manifests/
   kubectl --namespace kube-system rollout status deployment/monitoring-grafana
   kubectl --namespace kube-system rollout status deployment/monitoring-influxdb
   kubectl --namespace kube-system rollout status deployment/heapster
-  kubectl --namespace kube-system apply -f manifests/traefik.yml
   kubectl --namespace kube-system rollout status deployment/traefik-ingress-controller
-  kubectl --namespace kube-system apply -f manifests/dashboard-ingress.yml
-  kubectl --namespace kube-system rollout status manifests/dashboard-ingress.yml
-  kubectl --namespace kube-system apply -f manifests/registry.yml
-  kubectl --namespace kube-system rollout status manifests/registry.yml
+  # kubectl --namespace kube-system rollout status manifests/dashboard-ingress.yml
+  # kubectl --namespace kube-system rollout status manifests/registry.yml
+
+  sleep 2
+
+
+  kubectl apply -f https://raw.githubusercontent.com/kenzanlabs/spinikube/master/applications/tectonic/tectonic.json
+
+  kubectl create -f k8s/
+
+  kubectl cluster-info
+
   sleep 5
   open "http://dashboard.127.0.0.1.xip.io" || true
   xdg-open "http://dashboard.127.0.0.1.xip.io" || true
   explorer "http://dashboard.127.0.0.1.xip.io" || true
+
 }
 
 function dind::up {
