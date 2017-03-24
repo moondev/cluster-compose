@@ -56,7 +56,7 @@ APISERVER_PORT=${APISERVER_PORT:-8080}
 NUM_NODES=1
 LOCAL_KUBECTL_VERSION=${LOCAL_KUBECTL_VERSION:-}
 KUBECTL_DIR="${KUBECTL_DIR:-${HOME}/.kubeadm-dind-cluster}"
-DASHBOARD_URL="${DASHBOARD_URL:-https://rawgit.com/kubernetes/dashboard/bfab10151f012d1acc5dfb1979f3172e2400aa3c/src/deploy/kubernetes-dashboard.yaml}"
+DASHBOARD_URL="${DASHBOARD_URL:-https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml}"
 E2E_REPORT_DIR="${E2E_REPORT_DIR:-}"
 
 if [[ ! ${LOCAL_KUBECTL_VERSION:-} && ${DIND_IMAGE:-} =~ :(v[0-9]+\.[0-9]+)$ ]]; then
@@ -588,7 +588,9 @@ function dind::wait-for-ready {
   kubectl --namespace kube-system apply -f manifests/traefik.yml
   kubectl --namespace kube-system rollout status deployment/traefik-ingress-controller
   kubectl --namespace kube-system apply -f manifests/dashboard-ingress.yml
-  kubectl --namespace kube-system get ing
+  kubectl --namespace kube-system rollout status manifests/dashboard-ingress.yml
+  kubectl --namespace kube-system apply -f manifests/registry.yml
+  kubectl --namespace kube-system rollout status manifests/registry.yml
   sleep 5
   open "http://dashboard.127.0.0.1.xip.io" || true
   xdg-open "http://dashboard.127.0.0.1.xip.io" || true
